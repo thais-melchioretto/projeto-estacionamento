@@ -33,7 +33,7 @@ namespace Estacionamento
         {
             this.components = new System.ComponentModel.Container();
             this.bancoestacionamentoDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.bancoestacionamentoDataSet = new Estacionamento.bancoestacionamentoDataSet();
+            this.bancoestacionamentoDataSet = new global::Estacionamento.bancoestacionamentoDataSet();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();

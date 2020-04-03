@@ -9,32 +9,38 @@ namespace Estacionamento
     public partial class TabelaPreco : Form
 
     {
-        private MySqlConnection conect;
-        private MySqlCommand objsql;
         private MySqlDataAdapter objAdapter;
         private DataSet mDataSet;
 
         DateTime data1, data2;
         double precoporhora, adicional;
         string periodo;
-        
 
-        private void conectabanco()
+
+        public void Chamarbanco()
         {
-            conect = new MySqlConnection("server=localhost;" +
-            "user id=root;password=Thais123;database=bancoestacionamento;" +
-            "Convert Zero Datetime = true");
-            conect.Open();
+            ConectaBanco conecta = new ConectaBanco();
+            conecta.conexao();
         }
 
         private void mostraResultados()
         {
             mDataSet = new DataSet();
 
-            conectabanco();
+            Chamarbanco();
 
-            objAdapter = new MySqlDataAdapter("SELECT DATAINICIAL,DATAFINAL,PRECO,ADICIONAL" +
-                ",PERIODO FROM TABELAPRECOS ORDER BY DATAINICIAL", conect);
+            MySqlCommand comando = new MySqlCommand
+            {
+                Connection = ConectaBanco.conect
+            };
+
+            objAdapter = new MySqlDataAdapter();
+
+            string query = "SELECT DATAINICIAL,DATAFINAL,PRECO,ADICIONAL" +
+                ",PERIODO FROM TABELAPRECOS ORDER BY DATAINICIAL";
+            comando.CommandText = query;
+
+            objAdapter.SelectCommand = comando;
 
             objAdapter.Fill(mDataSet, "TABELAPRECOS");
 
@@ -66,18 +72,24 @@ namespace Estacionamento
 
                 try
                 {
+                    Chamarbanco();
 
-                    objsql = new MySqlCommand("INSERT INTO tabelaprecos " +
+                    MySqlCommand comando = new MySqlCommand
+                    {
+                        Connection = ConectaBanco.conect
+                    };
+
+                    string query = "INSERT INTO tabelaprecos " +
                     "(DATAINICIAL, DATAFINAL, PRECO, ADICIONAL, PERIODO) VALUES('" +
                     data1.ToString("yyyy-MM-dd hh:mm:ss") +
                     "','" + data2.ToString("yyyy-MM-dd hh:mm:ss") +
                     "','" + precoporhora.ToString("0.00").Replace(",", ".") +
                     "','" + adicional.ToString("0.00").Replace(",", ".") +
-                    "','" + periodo + "')", conect);
+                    "','" + periodo + "')";
+                    comando.CommandText = query;
 
-
-                    objsql.ExecuteNonQuery();
-                    conect.Close();
+                    comando.ExecuteNonQuery();
+                    
                     MessageBox.Show("Dados incluidos no Banco");
                     mostraResultados();
                 }
@@ -113,20 +125,31 @@ namespace Estacionamento
 
                 try
                 {
-                    objsql = new MySqlCommand("SELECT HANDLE FROM TABELAPRECOS " +
-                    "WHERE PERIODO ='" + periodo + "'", conect);
+                    Chamarbanco();
+
+                    MySqlCommand comando = new MySqlCommand
+                    {
+                        Connection = ConectaBanco.conect
+                    };
+
+                    string query = "SELECT HANDLE FROM TABELAPRECOS " +
+                    "WHERE PERIODO ='" + periodo + "'";
+                    comando.CommandText = query;
 
                     int handle;
-                    handle = int.Parse(objsql.ExecuteScalar() + "");
-                    objsql = new MySqlCommand("UPDATE TABELAPRECOS SET " +
+
+                    handle = int.Parse(comando.ExecuteScalar() + "");
+
+                    string update = "UPDATE TABELAPRECOS SET " +
                         " DATAINICIAL ='" + data1.ToString("yyyy-MM-dd hh:mm:ss") +
                         "', DATAFINAL ='" + data2.ToString("yyyy-MM-dd hh:mm:ss") +
                         "', PRECO = " + precoporhora.ToString("0.00").Replace(",", ".") +
                         ", ADICIONAL = " + adicional.ToString("0.00").Replace(",", ".") +
-                        " WHERE HANDLE = " + handle + "", conect);
+                        " WHERE HANDLE = " + handle + "";
+                    comando.CommandText = update;
 
-                    objsql.ExecuteNonQuery();
-                    conect.Close();
+                    comando.ExecuteNonQuery();
+                    
                     MessageBox.Show("Alterado registro");
                     mostraResultados();
                 }
@@ -153,11 +176,16 @@ namespace Estacionamento
             }
             else
             {
-                conectabanco();
+                Chamarbanco();
 
-                objsql = new MySqlCommand("SELECT HANDLE FROM TABELAPRECOS " +
-                    "WHERE PERIODO ='" + periodo + "'", conect);
+                MySqlCommand comando = new MySqlCommand
+                {
+                    Connection = ConectaBanco.conect
+                };
 
+                string query = "SELECT HANDLE FROM TABELAPRECOS " +
+                    "WHERE PERIODO ='" + periodo + "'";
+                comando.CommandText = query;
                 int handle;
 
                 data1 = Convert.ToDateTime(datainicial.Text);
@@ -169,13 +197,14 @@ namespace Estacionamento
                 try
                 {
 
-                    handle = int.Parse(objsql.ExecuteScalar() + "");
+                    handle = int.Parse(comando.ExecuteScalar() + "");
 
-                    objsql = new MySqlCommand("DELETE FROM TABELAPRECOS" +
-                        " WHERE HANDLE = " + handle + "", conect);
+                    string delete = "DELETE FROM TABELAPRECOS" +
+                        " WHERE HANDLE = " + handle + "";
+                    comando.CommandText = delete;
 
-                    objsql.ExecuteNonQuery();
-                    conect.Close();
+                    comando.ExecuteNonQuery();
+                    
                     MessageBox.Show("Registro excluido.");
                     mostraResultados();
                 }

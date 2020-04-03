@@ -7,13 +7,10 @@ namespace Estacionamento
 {
     public partial class Alterar : Form
     {
-        private MySqlConnection conect;
-        private MySqlCommand objsql;
         public MySqlDataReader DataReader { get; set; }
-        string descricao;
         DateTime hoje = DateTime.Now;
-        string placa;
-
+        string placa, descricao, vlrapagar;
+        private DateTime dataentrada, datasaida, tempo;
 
         public Alterar()
         {
@@ -21,26 +18,30 @@ namespace Estacionamento
             lista();
         }
 
-        private void conectabanco()
+        public void Chamarbanco()
         {
-            conect = new MySqlConnection("server=localhost;" +
-            "user id=root;password=Thais123;database=bancoestacionamento;" +
-            "Convert Zero Datetime = true");
-            conect.Open();
+            ConectaBanco conecta = new ConectaBanco();
+            conecta.conexao();
         }
 
         private void lista()
         {
-            conectabanco();
-            DateTime semana = hoje.AddDays(-7);
+            Chamarbanco();
+
+            MySqlCommand comando = new MySqlCommand
+            {
+                Connection = ConectaBanco.conect
+            };
+            DateTime semana = hoje.AddDays(-15);
 
             try
             {
-                objsql = new MySqlCommand("SELECT PLACA FROM ENTRADA_SAIDA WHERE " +
+                string query = "SELECT PLACA FROM ENTRADA_SAIDA WHERE " +
                     "HORAENTRADA BETWEEN '" + semana.ToString("yyyy-MM-dd") + "' AND " +
-                    " '" + hoje.ToString("yyyy-MM-dd") + "'", conect);
+                    " '" + hoje.ToString("yyyy-MM-dd 23:59:59") + "'";
+                comando.CommandText = query;
 
-                DataReader = objsql.ExecuteReader();
+                DataReader = comando.ExecuteReader();
                 DataTable table = new DataTable();
                 table.Load(DataReader);
                 this.cbplaca.ValueMember = "PLACA";
@@ -56,38 +57,130 @@ namespace Estacionamento
         }
 
         private void placas()
+
         {
             placa = cbplaca.Text;
-            /*
+            dataentrada = Convert.ToDateTime(txthentrada.Text);
+            datasaida = Convert.ToDateTime(txthsaida.Text);
+            descricao = Convert.ToString(txtdescricao.Text);
+            tempo = Convert.ToDateTime(txttempo.Text);
+            vlrapagar = Convert.ToString(txtvlrpagar.Text);
+
             try
             {
-                conectabanco();
+                Chamarbanco();
 
-                objsql = new MySqlCommand("SELECT DESCRICAO FROM ENTRADA_SAIDA " +
-                                            "WHERE PLACA ='" + placa.ToString() + "' " +
-                                            "AND HORAENTRADA BETWEEN '" + hoje.ToString("yyyy-MM") +
-                                            "-01' AND '" + hoje.ToString("yyyy-MM") + "-31'", conect);
+                MySqlCommand comando = new MySqlCommand
+                {
+                    Connection = ConectaBanco.conect
+                };
 
-                string placa;
-                placa = (objsql.ExecuteScalar() + "");
-                txtplaca.Text = placa.ToString();
+                string select = "SELECT HANDLE FROM ENTRADA_SAIDA WHERE " +
+                    "PLACA='" + placa.ToString() + "'";
+                comando.CommandText = select;
+
+                int handle = int.Parse(comando.ExecuteScalar() + "");
+
+                string query = " UPDATE ENTRADA_SAIDA SET " +
+                    "HORAENTRADA ='" + dataentrada.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', HORASAIDA = '" + datasaida.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', DESCRICAO = '" + descricao.ToString() +
+                    "', TEMPO = '" + tempo.ToString("HH:mm:ss") +
+                    "', VALORAPAGAR = '" + vlrapagar.ToString() +
+                    "' WHERE HANDLE = " + handle.ToString();
+
+
+                comando.CommandText = query;
+                comando.ExecuteNonQuery();
+
+                MessageBox.Show("Valores alterados.");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("" +
                     "Erro: " + ex.Message);
             }
-            */
+            
 
+        }
+
+        private void limpar()
+        {
+            txthentrada.Text = "";
+            txthsaida.Text = "";
+            txtdescricao.Text = "";
+            txttempo.Text = "";
+            txtvlrpagar.Text = "";
         }
         private void Alterar_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void label6_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnexcluir_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(" Deseja excluir ?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+           
+                {
+                placa = cbplaca.Text;
+                
+                try
+                {
+                    Chamarbanco();
+
+                    MySqlCommand comando = new MySqlCommand
+                    {
+                        Connection = ConectaBanco.conect
+                    };
+
+                    string select = "SELECT HANDLE FROM ENTRADA_SAIDA WHERE " +
+                        "PLACA='" + placa.ToString() + "'";
+                    comando.CommandText = select;
+
+                    int handle = int.Parse(comando.ExecuteScalar() + "");
+
+                    string delete = " DELETE FROM ENTRADA_SAIDA  " +
+                        " WHERE HANDLE = " + handle.ToString();
+
+
+                    comando.CommandText = delete;
+                    comando.ExecuteNonQuery();
+
+                    MessageBox.Show("Documento excluido.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("" +
+                        "Erro: " + ex.Message);
+                }
+            }
+            limpar();
+        }
+
+       private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            placas();
+            limpar();
         }
 
         private void cbplaca_SelectedIndexChanged(object sender, EventArgs e)

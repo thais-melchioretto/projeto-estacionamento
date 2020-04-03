@@ -2,34 +2,38 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Windows.Forms;
+
 
 namespace Estacionamento
 {
-    public partial class Entrada 
-        : Form
+    public partial class Entrada : Form
     {
-        private MySqlConnection conect;
-        private MySqlCommand objsql;
-
         DateTime dataentrada;
         String descricao, placa;
+
         public Entrada()
         {
-            InitializeComponent();
-            
+            InitializeComponent();          
             txthentrada.Text = DateTime.Now.ToString();
-        }
 
-        private void conectabanco()
+        }
+           
+        public void Limpar()
         {
-            conect = new MySqlConnection("server=localhost;" +
-            "user id=root;password=Thais123;database=bancoestacionamento;" +
-            "Convert Zero Datetime = true");
-            conect.Open();
+            txtplaca.Text = "";
+            txthentrada.Text = "";
+            txtdesc.Text = "";
         }
 
-        public void inserirentrada()
+        public void Chamarbanco()
+        {
+            ConectaBanco conecta = new ConectaBanco();
+            conecta.conexao();
+        }
+
+        public void Inserirentrada()
         {
             if (string.IsNullOrWhiteSpace(txthentrada.Text) ||
                 string.IsNullOrWhiteSpace(txtdesc.Text) ||
@@ -38,7 +42,8 @@ namespace Estacionamento
 
             {
                 MessageBox.Show("Preencha todas as informações");
-            }else
+            }
+            else
             {
                 dataentrada = Convert.ToDateTime(txthentrada.Text);
                 placa = Convert.ToString(txtplaca.Text);
@@ -46,18 +51,23 @@ namespace Estacionamento
 
                 try
                 {
-                    conectabanco();
+                    Chamarbanco();
 
-                    objsql = new MySqlCommand("INSERT INTO ENTRADA_SAIDA " +
+                    MySqlCommand comando = new MySqlCommand
+                    {
+                        Connection = ConectaBanco.conect
+                    };
+
+                    string query = "INSERT INTO ENTRADA_SAIDA " +
                     "(PLACA, HORAENTRADA, DESCRICAO) VALUES('" + placa +
-                    "','" + dataentrada.ToString("yyyy-MM-dd HH:mm:ss") + 
-                    "','" + descricao + "')", conect);
+                    "','" + dataentrada.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "','" + descricao + "')";
 
-                    
-                    objsql.ExecuteNonQuery();
-                    conect.Close();
+                    comando.CommandText = query;
+
+                    comando.ExecuteNonQuery();;
                     MessageBox.Show("Entrada incluída.");
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -67,27 +77,11 @@ namespace Estacionamento
             }
         }
 
-        public void limpar()
+
+        private void Bntsalvar_Click(object sender, EventArgs e)
         {
-            txtplaca.Text = "";
-            txthentrada.Text = "";
-            txtdesc.Text = "";
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolTip1_Popup(object sender, PopupEventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            inserirentrada();
-            limpar();
+            Inserirentrada();
+            Limpar();
         }
     }
 }

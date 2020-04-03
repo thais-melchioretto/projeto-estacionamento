@@ -35,8 +35,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.bancoestacionamentoDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.bancoestacionamentoDataSet = new Estacionamento.bancoestacionamentoDataSet();
-            this.button1 = new System.Windows.Forms.Button();
+            this.bancoestacionamentoDataSet = new global::Estacionamento.bancoestacionamentoDataSet();
+            this.bntsalvar = new System.Windows.Forms.Button();
             this.txtdesc = new System.Windows.Forms.TextBox();
             this.txthentrada = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.bancoestacionamentoDataSetBindingSource)).BeginInit();
@@ -47,7 +47,7 @@
             // 
             this.txtplaca.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtplaca.Location = new System.Drawing.Point(117, 46);
-            this.txtplaca.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtplaca.Margin = new System.Windows.Forms.Padding(4);
             this.txtplaca.Name = "txtplaca";
             this.txtplaca.Size = new System.Drawing.Size(191, 23);
             this.txtplaca.TabIndex = 0;
@@ -62,7 +62,6 @@
             this.label1.Size = new System.Drawing.Size(51, 17);
             this.label1.TabIndex = 1;
             this.label1.Text = "Placa: ";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -106,23 +105,23 @@
             this.bancoestacionamentoDataSet.DataSetName = "bancoestacionamentoDataSet";
             this.bancoestacionamentoDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // button1
+            // bntsalvar
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(107, 150);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(90, 31);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Salvar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.bntsalvar.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bntsalvar.Location = new System.Drawing.Point(107, 150);
+            this.bntsalvar.Name = "bntsalvar";
+            this.bntsalvar.Size = new System.Drawing.Size(90, 31);
+            this.bntsalvar.TabIndex = 4;
+            this.bntsalvar.Text = "Salvar";
+            this.bntsalvar.UseVisualStyleBackColor = true;
+            this.bntsalvar.Click += new System.EventHandler(this.Bntsalvar_Click);
             // 
             // txtdesc
             // 
             this.txtdesc.Location = new System.Drawing.Point(118, 105);
             this.txtdesc.Name = "txtdesc";
             this.txtdesc.Size = new System.Drawing.Size(190, 24);
-            this.txtdesc.TabIndex = 11;
+            this.txtdesc.TabIndex = 3;
             // 
             // txthentrada
             // 
@@ -131,7 +130,7 @@
             this.txthentrada.Margin = new System.Windows.Forms.Padding(4);
             this.txthentrada.Name = "txthentrada";
             this.txthentrada.Size = new System.Drawing.Size(191, 23);
-            this.txthentrada.TabIndex = 13;
+            this.txthentrada.TabIndex = 2;
             // 
             // Entrada
             // 
@@ -140,14 +139,14 @@
             this.ClientSize = new System.Drawing.Size(322, 193);
             this.Controls.Add(this.txthentrada);
             this.Controls.Add(this.txtdesc);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.bntsalvar);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtplaca);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Entrada";
             this.Text = "Entrada";
             ((System.ComponentModel.ISupportInitialize)(this.bancoestacionamentoDataSetBindingSource)).EndInit();
@@ -166,7 +165,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.BindingSource bancoestacionamentoDataSetBindingSource;
         private bancoestacionamentoDataSet bancoestacionamentoDataSet;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bntsalvar;
         private System.Windows.Forms.TextBox txtdesc;
         private System.Windows.Forms.TextBox txthentrada;
     }

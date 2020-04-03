@@ -10,39 +10,44 @@ namespace Estacionamento
     public partial class Saida : Form
 
     {
-        
-        private MySqlConnection conect;
-        private MySqlCommand objsql;
         public MySqlDataReader DataReader { get; set; }
 
-        string descricao,placa;
+        Double preco, adicional, valor;
+        string placas, descricao;
         DateTime hoje = DateTime.Now;
         DateTime datasaida;
-        Double preco, adicional,valor;
+        
         int handle;
 
-        private void conectabanco()
+        // Metodo chama a função para conectar com o banco.
+        public void Chamarbanco()
         {
-            conect = new MySqlConnection("server=localhost;" +
-            "user id=root;password=Thais123;database=bancoestacionamento;" +
-            "Convert Zero Datetime = true");
-            conect.Open();
+            ConectaBanco conecta = new ConectaBanco();
+            conecta.conexao();
         }
-        
-        private void lista()
-        {
-            conectabanco();
 
+        // Função para chamar a lista de carros cadastrados. 
+        private void Lista()
+        {
             try
             {
-                objsql = new MySqlCommand("SELECT DESCRICAO FROM ENTRADA_SAIDA " +
-                "ORDER BY HORAENTRADA DESC", conect);
+                Chamarbanco();
 
-                DataReader = objsql.ExecuteReader();
+                MySqlCommand comando = new MySqlCommand
+                {
+                    Connection = ConectaBanco.conect
+                };
+
+                string query = "SELECT PLACA FROM ENTRADA_SAIDA " +
+                "WHERE HORASAIDA IS NULL ORDER BY HORAENTRADA DESC";
+
+                comando.CommandText = query;
+
+                DataReader = comando.ExecuteReader();
                 DataTable table = new DataTable();
                 table.Load(DataReader);                
-                this.cbdescricao.ValueMember = "DESCRICAO";
-                this.cbdescricao.DataSource = table;
+                this.cbplaca.ValueMember = "PLACA";
+                this.cbplaca.DataSource = table;
                 DataReader.Close();
             }
             catch (Exception ex)
@@ -53,77 +58,79 @@ namespace Estacionamento
 
         }
 
-
-        private void placas()
+        // Função para chamar as descrição dos carros conforme a placa. 
+        private void Descricao()
         {
-            descricao = cbdescricao.Text;
+            placas = cbplaca.Text;
 
             try
             {
+                Chamarbanco();
 
-                conectabanco();
+                MySqlCommand comando = new MySqlCommand
+                {
+                    Connection = ConectaBanco.conect
+                };
 
-                objsql = new MySqlCommand("SELECT PLACA FROM ENTRADA_SAIDA " +
-                                            "WHERE DESCRICAO ='" + descricao + "' " +
-                                            "AND HORAENTRADA BETWEEN '" + hoje.ToString("yyyy-MM") +
-                                            "-01' AND '" + hoje.ToString("yyyy-MM") + "-31'", conect);
+                string query = "SELECT DESCRICAO FROM ENTRADA_SAIDA " +
+                               "WHERE PLACA ='" + placas.ToString() +  "'";
 
-                string placa;
-                placa = (objsql.ExecuteScalar() + "");   
-                txtplaca.Text = placa.ToString();
+                comando.CommandText = query;
+
+                
+                descricao = (comando.ExecuteScalar() + "");   
+                txtdescricao.Text = descricao.ToString();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("" +
                     "Erro: " + ex.Message);
             }
-
-
         }
 
-        private void camposaida()
+        // Carrega no campo saida a data de hoje.
+        private void CampoSaida()
         {
             txthsaida.Text = hoje.ToString();
         }
 
-        private void limpar()
-        {
-            txthsaida.Text = "";
-            txtplaca.Text = "";
-        }
-
-        public void inserirsaida()
+        // Inserir no banco a data e hora de saida. 
+        public void Inserirsaida()
         {
             if (string.IsNullOrWhiteSpace(txthsaida.Text) ||
-                string.IsNullOrWhiteSpace(txtplaca.Text)
+                string.IsNullOrWhiteSpace(txtdescricao.Text)
                 )
-
             {
                 MessageBox.Show("Preencha todas as informações");
             }
             else
             {
                 datasaida = Convert.ToDateTime(txthsaida.Text);
-                placa = Convert.ToString(txtplaca.Text);
-                descricao = cbdescricao.Text;
+                placas = Convert.ToString(cbplaca.Text);
+                placas = cbplaca.Text;
 
                 try
                 {
-                    conectabanco();
-                    
-                    objsql = new MySqlCommand("SELECT HANDLE FROM ENTRADA_SAIDA " +
-                    "WHERE PLACA ='" + placa.ToString() + "' AND " +
-                    "DESCRICAO = '" + descricao.ToString() + "'", conect);
+                    /* Procura o handle para fazer o update. */ 
+                    Chamarbanco();
 
-                    
-                    handle = int.Parse(objsql.ExecuteScalar() + "");
+                    MySqlCommand comando = new MySqlCommand
+                    {
+                        Connection = ConectaBanco.conect
+                    };
 
-                    objsql = new MySqlCommand("UPDATE ENTRADA_SAIDA SET " +
+                    string query = "SELECT HANDLE FROM ENTRADA_SAIDA " +
+                    "WHERE PLACA ='" + placas.ToString() + "' AND " +
+                    "DESCRICAO = '" + descricao.ToString() + "'";
+                    comando.CommandText = query;
+                    handle = int.Parse(comando.ExecuteScalar() + "");
+
+                    /* Update para incluir a data de saida. */
+                    string update = "UPDATE ENTRADA_SAIDA SET " +
                     "HORASAIDA = '" + datasaida.ToString("yyyy-MM-dd HH:mm:ss") +
-                    "' WHERE HANDLE= " + handle.ToString(), conect);
-
-                    objsql.ExecuteNonQuery();
-                    conect.Close();
+                    "' WHERE HANDLE= " + handle.ToString();
+                    comando.CommandText = update;
+                    comando.ExecuteNonQuery();
                     MessageBox.Show("Saída incluída.");
 
                 }
@@ -135,73 +142,96 @@ namespace Estacionamento
             }
         }
 
-        public void valorpagar()
+        // Calcular o valor a pagar. 
+        public void Valorpagar()
         {
-            placa = Convert.ToString(txtplaca.Text);
-            descricao = cbdescricao.Text;
+            placas = Convert.ToString(cbplaca.Text);
+            descricao = txtdescricao.Text;
+            
             TimeSpan result;
 
             try
             {
-                conectabanco();
+                Chamarbanco();
 
-                objsql = new MySqlCommand("SELECT HORAENTRADA " +
-                    "FROM ENTRADA_SAIDA WHERE PLACA='" + placa.ToString() +
-                    "' AND DESCRICAO='" + descricao.ToString() + "'", conect);
+                MySqlCommand comando = new MySqlCommand
+                {
+                    Connection = ConectaBanco.conect
+                };
+
+                string query = "SELECT HORAENTRADA " +
+                    "FROM ENTRADA_SAIDA WHERE PLACA='" + placas.ToString() +
+                    "' AND DESCRICAO='" + descricao.ToString() + "'";
+                comando.CommandText = query;
 
                 DateTime horaentrada;
-                horaentrada = DateTime.Parse(objsql.ExecuteScalar() + "");
+                horaentrada = DateTime.Parse(comando.ExecuteScalar() + "");
 
-                objsql = new MySqlCommand("SELECT HORASAIDA " +
-                    "FROM ENTRADA_SAIDA WHERE PLACA='" + placa.ToString() +
-                    "' AND DESCRICAO='" + descricao.ToString() + "'", conect);
+                string selecthorasaida = "SELECT HORASAIDA " +
+                    "FROM ENTRADA_SAIDA WHERE PLACA='" + placas.ToString() +
+                    "' AND DESCRICAO='" + descricao.ToString() + "'";
+
+                comando.CommandText = selecthorasaida;
 
                 DateTime horasaida;
  
-
-                horasaida = DateTime.Parse(objsql.ExecuteScalar() + "");
-
-                
+                horasaida = DateTime.Parse(comando.ExecuteScalar() + "");
+               
                 result = horasaida.Subtract(horaentrada);
                 int h = int.Parse(result.Hours.ToString());
                 int m = int.Parse(result.Minutes.ToString());
 
-                objsql = new MySqlCommand("SELECT PRECO " +
-                    "FROM TABELAPRECOS WHERE DATAINICIAL >= '" + hoje.ToString("yyyy") +
-                    "-01-01' AND DATAFINAL <= '" + hoje.ToString("yyyy") + "-12-31'", conect);
+                string selectpreco = "SELECT PRECO FROM TABELAPRECOS WHERE DATAINICIAL" +
+                    " >= '" + hoje.ToString("yyyy") +"-01-01' AND DATAFINAL <= '" + 
+                    hoje.ToString("yyyy") + "-12-31'";
+                comando.CommandText = selectpreco;
 
-                preco = Double.Parse(objsql.ExecuteScalar() + "",CultureInfo.InvariantCulture);
+                preco = Double.Parse(comando.ExecuteScalar() + "",CultureInfo.InvariantCulture);
 
-                objsql = new MySqlCommand("SELECT ADICIONAL " +
-                    "FROM TABELAPRECOS WHERE DATAINICIAL= '" + hoje.ToString("yyyy") +
-                    "-01-01' AND DATAFINAL= '" + hoje.ToString("yyyy") + "-12-31'", conect);
+                string selectadicional = "SELECT ADICIONAL FROM TABELAPRECOS WHERE " +
+                    "DATAINICIAL= '" + hoje.ToString("yyyy") + "-01-01' AND DATAFINAL= " +
+                    "'" + hoje.ToString("yyyy") + "-12-31'";
+                comando.CommandText = selectadicional;
 
-                adicional = Double.Parse(objsql.ExecuteScalar() + "", CultureInfo.InvariantCulture);
-
+                adicional = Double.Parse(comando.ExecuteScalar() + "", CultureInfo.InvariantCulture);
                 
-                         
-                if (h >= 1)
-                {
-                    valor = h * preco;
 
-                    if (m > 10)
-                    {
-                        valor = valor + adicional;
-                    }
+                if (m <= 30 && h < 1)
+                {
+                    valor = preco/2;
                 }
                 else
                 {
-                    valor = 1.00;
+                    if (m >= 30 && h < 1)
+                    {
+                        valor = preco;
+                    }
+                    else
+                    {
+                        if (m <= 10)
+                        {
+                            valor = (((h-1) * adicional) + preco);
+                        }
+                        else
+                        {
+                            valor = (((h - 1) * adicional) + preco + adicional);
+                        }
+                    }
+
                 }
 
-                MessageBox.Show("Valor a pagar de R$ " + valor.ToString("F2",CultureInfo.InvariantCulture));
 
-                objsql = new MySqlCommand("UPDATE ENTRADA_SAIDA SET " +
+                MessageBox.Show("Valor a pagar de R$ " + 
+                    valor.ToString("F2",CultureInfo.InvariantCulture) + ", pela permanencia" +
+                    "de " + result.ToString());
+
+                string update = "UPDATE ENTRADA_SAIDA SET " +
                     "TEMPO = '" + result.ToString() +"', VALORAPAGAR ='" + 
                     valor.ToString("F2", CultureInfo.InvariantCulture) +
-                    "' WHERE HANDLE= " + handle.ToString(), conect);
+                    "' WHERE HANDLE= " + handle.ToString();
 
-                objsql.ExecuteNonQuery();
+                comando.CommandText = update;
+                comando.ExecuteNonQuery();
 
 
             }
@@ -217,26 +247,31 @@ namespace Estacionamento
 
         }
 
-        public void valortabelaprecos()
+        // Calcular o valor a pagar. 
+        public void ValorTabelaPrecos()
         {
             
             try
             {
-                conectabanco();
+                Chamarbanco();
 
-                objsql = new MySqlCommand("SELECT HANDLE FROM TABELAPRECOS " +
+                MySqlCommand comando = new MySqlCommand
+                {
+                    Connection = ConectaBanco.conect
+                };
+
+                string query = "SELECT HANDLE FROM TABELAPRECOS " +
                 "WHERE DATAINICIAL >='" + hoje.ToString("yyyy") + "-01-01' AND " +
-                "DATAFINAL <= '" + hoje.ToString("yyyy") + "-12-31''", conect);
+                "DATAFINAL <= '" + hoje.ToString("yyyy") + "-12-31''";
+                comando.CommandText = query;
 
                 int handle;
-                handle = int.Parse(objsql.ExecuteScalar() + "");
+                handle = int.Parse(comando.ExecuteScalar() + "");
 
-                objsql = new MySqlCommand("SELECT PRECO FROM HANDLE =" + handle.ToString() 
-                    , conect);
+                string selectpreco = "SELECT PRECO FROM HANDLE =" + handle.ToString();
+                comando.CommandText = selectpreco;
 
-
-                objsql.ExecuteNonQuery();
-                conect.Close();
+                comando.ExecuteNonQuery();
                 MessageBox.Show("Saída incluída.");
 
             }
@@ -246,29 +281,38 @@ namespace Estacionamento
                     "Erro: " + ex.Message);
             }
         }
+
         public Saida()
         {
             InitializeComponent();
-            lista();
-            placas();
-            camposaida();
+            Lista();
+            Descricao();
+            CampoSaida();
+        }
+
+
+        // Função que chama todos os metodos.  
+        private void Btnsalvar_Click(object sender, EventArgs e)
+        {
             
-
+            Inserirsaida();
+            Valorpagar();
+            Limpar();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Cbdescricao_SelectedIndexChanged(object sender, EventArgs e)
         {
-            inserirsaida();
-            valorpagar();
-            limpar();
+            Descricao();
+            CampoSaida();
+
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        /* Função para limpar os campos após salvar. */ 
+        private void Limpar()
         {
-            placas();
-            camposaida();
-
+            txthsaida.Text = "";
+            txtdescricao.Text = "";
         }
-        
+
     }
 }
