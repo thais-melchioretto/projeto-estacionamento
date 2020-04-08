@@ -34,7 +34,6 @@ namespace Estacionamento
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Estacionamento));
             this.bancoestacionamentoDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.bancoestacionamentoDataSet = new global::Estacionamento.bancoestacionamentoDataSet();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,10 +42,10 @@ namespace Estacionamento
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnentrada = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnsaida = new System.Windows.Forms.Button();
+            this.btnalterar = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -57,23 +56,12 @@ namespace Estacionamento
             this.btndia = new System.Windows.Forms.Button();
             this.imageList2 = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.bancoestacionamentoDataSetBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bancoestacionamentoDataSet)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // bancoestacionamentoDataSetBindingSource
-            // 
-            this.bancoestacionamentoDataSetBindingSource.DataSource = this.bancoestacionamentoDataSet;
-            this.bancoestacionamentoDataSetBindingSource.Position = 0;
-            // 
-            // bancoestacionamentoDataSet
-            // 
-            this.bancoestacionamentoDataSet.DataSetName = "bancoestacionamentoDataSet";
-            this.bancoestacionamentoDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // imageList1
             // 
@@ -96,7 +84,6 @@ namespace Estacionamento
             // 
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(12, 20);
-            this.toolStripComboBox1.Click += new System.EventHandler(this.toolStripComboBox1_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -111,7 +98,7 @@ namespace Estacionamento
             this.tabelaDePreçosToolStripMenuItem.Name = "tabelaDePreçosToolStripMenuItem";
             this.tabelaDePreçosToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.tabelaDePreçosToolStripMenuItem.Text = "Tabela de Preços";
-            this.tabelaDePreçosToolStripMenuItem.Click += new System.EventHandler(this.tabelaDePreçosToolStripMenuItem_Click);
+            this.tabelaDePreçosToolStripMenuItem.Click += new System.EventHandler(this.TabelaDePrecos);
             // 
             // menuStrip1
             // 
@@ -134,25 +121,25 @@ namespace Estacionamento
             this.contextMenuStrip2.Name = "contextMenuStrip2";
             this.contextMenuStrip2.Size = new System.Drawing.Size(61, 4);
             // 
-            // button1
+            // btnentrada
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.btnentrada.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(85)))), ((int)(((byte)(65)))));
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(9, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(122, 34);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "ENTRADA";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnentrada.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(85)))), ((int)(((byte)(65)))));
+            this.btnentrada.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnentrada.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnentrada.FlatAppearance.BorderSize = 0;
+            this.btnentrada.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnentrada.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnentrada.ForeColor = System.Drawing.Color.White;
+            this.btnentrada.Location = new System.Drawing.Point(9, 19);
+            this.btnentrada.Name = "btnentrada";
+            this.btnentrada.Size = new System.Drawing.Size(122, 34);
+            this.btnentrada.TabIndex = 1;
+            this.btnentrada.Text = "ENTRADA";
+            this.btnentrada.UseVisualStyleBackColor = false;
+            this.btnentrada.Click += new System.EventHandler(this.BtnEntrada);
             // 
             // pictureBox1
             // 
@@ -163,35 +150,35 @@ namespace Estacionamento
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             // 
-            // button2
+            // btnsaida
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(54)))), ((int)(((byte)(35)))));
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(9, 59);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(122, 34);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Saída";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnsaida.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(54)))), ((int)(((byte)(35)))));
+            this.btnsaida.FlatAppearance.BorderSize = 0;
+            this.btnsaida.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnsaida.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnsaida.ForeColor = System.Drawing.Color.White;
+            this.btnsaida.Location = new System.Drawing.Point(9, 59);
+            this.btnsaida.Name = "btnsaida";
+            this.btnsaida.Size = new System.Drawing.Size(122, 34);
+            this.btnsaida.TabIndex = 2;
+            this.btnsaida.Text = "Saída";
+            this.btnsaida.UseVisualStyleBackColor = false;
+            this.btnsaida.Click += new System.EventHandler(this.BtnSaida);
             // 
-            // button3
+            // btnalterar
             // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(148)))), ((int)(((byte)(48)))));
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Location = new System.Drawing.Point(9, 99);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(122, 34);
-            this.button3.TabIndex = 7;
-            this.button3.Text = "Alterar";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnalterar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(148)))), ((int)(((byte)(48)))));
+            this.btnalterar.FlatAppearance.BorderSize = 0;
+            this.btnalterar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnalterar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnalterar.ForeColor = System.Drawing.Color.White;
+            this.btnalterar.Location = new System.Drawing.Point(9, 99);
+            this.btnalterar.Name = "btnalterar";
+            this.btnalterar.Size = new System.Drawing.Size(122, 34);
+            this.btnalterar.TabIndex = 7;
+            this.btnalterar.Text = "Alterar";
+            this.btnalterar.UseVisualStyleBackColor = false;
+            this.btnalterar.Click += new System.EventHandler(this.BntAlterar);
             // 
             // dataGridView1
             // 
@@ -207,16 +194,15 @@ namespace Estacionamento
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.button3);
-            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.btnentrada);
+            this.groupBox1.Controls.Add(this.btnalterar);
+            this.groupBox1.Controls.Add(this.btnsaida);
             this.groupBox1.Location = new System.Drawing.Point(12, 93);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(141, 149);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Entrada\\Saída";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // groupBox2
             // 
@@ -231,7 +217,6 @@ namespace Estacionamento
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Consulta";
-            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
             // btnconsulta
             // 
@@ -246,7 +231,7 @@ namespace Estacionamento
             this.btnconsulta.TabIndex = 4;
             this.btnconsulta.Text = "Consulta";
             this.btnconsulta.UseVisualStyleBackColor = false;
-            this.btnconsulta.Click += new System.EventHandler(this.button8_Click);
+            this.btnconsulta.Click += new System.EventHandler(this.BtnConsulta);
             // 
             // btnano
             // 
@@ -261,7 +246,7 @@ namespace Estacionamento
             this.btnano.TabIndex = 3;
             this.btnano.Text = "Ano";
             this.btnano.UseVisualStyleBackColor = false;
-            this.btnano.Click += new System.EventHandler(this.button7_Click);
+            this.btnano.Click += new System.EventHandler(this.BtnAno);
             // 
             // btnmes
             // 
@@ -276,7 +261,7 @@ namespace Estacionamento
             this.btnmes.TabIndex = 2;
             this.btnmes.Text = "Mês";
             this.btnmes.UseVisualStyleBackColor = false;
-            this.btnmes.Click += new System.EventHandler(this.button6_Click);
+            this.btnmes.Click += new System.EventHandler(this.BtnMes);
             // 
             // btnsemana
             // 
@@ -291,7 +276,7 @@ namespace Estacionamento
             this.btnsemana.TabIndex = 1;
             this.btnsemana.Text = "Semana";
             this.btnsemana.UseVisualStyleBackColor = false;
-            this.btnsemana.Click += new System.EventHandler(this.button5_Click);
+            this.btnsemana.Click += new System.EventHandler(this.BtnSemana);
             // 
             // btndia
             // 
@@ -307,7 +292,7 @@ namespace Estacionamento
             this.btndia.TabIndex = 0;
             this.btndia.Text = "Dia";
             this.btndia.UseVisualStyleBackColor = false;
-            this.btndia.Click += new System.EventHandler(this.button4_Click);
+            this.btndia.Click += new System.EventHandler(this.BtnDia);
             // 
             // imageList2
             // 
@@ -315,7 +300,7 @@ namespace Estacionamento
             this.imageList2.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList2.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // Form1
+            // Estacionamento
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -329,10 +314,8 @@ namespace Estacionamento
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Name = "Estacionamento";
             ((System.ComponentModel.ISupportInitialize)(this.bancoestacionamentoDataSetBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bancoestacionamentoDataSet)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -351,7 +334,6 @@ namespace Estacionamento
 
         #endregion
         private System.Windows.Forms.BindingSource bancoestacionamentoDataSetBindingSource;
-        private bancoestacionamentoDataSet bancoestacionamentoDataSet;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem toolStripComboBox1;
@@ -360,10 +342,10 @@ namespace Estacionamento
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnentrada;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnsaida;
+        private System.Windows.Forms.Button btnalterar;
         private DataGridView dataGridView1;
         private GroupBox groupBox1;
         private GroupBox groupBox2;

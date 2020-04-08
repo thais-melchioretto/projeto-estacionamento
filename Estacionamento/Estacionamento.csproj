@@ -32,6 +32,83 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'x86|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'x86|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\x86\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'x86|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\x86\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FirebirdSql.Data.FirebirdClient, Version=7.5.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
       <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.7.5.0\lib\net452\FirebirdSql.Data.FirebirdClient.dll</HintPath>
@@ -54,56 +131,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alterar.cs">
+    <Compile Include="Forms\Alterar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Alterar.Designer.cs">
+    <Compile Include="Forms\Alterar.Designer.cs">
       <DependentUpon>Alterar.cs</DependentUpon>
     </Compile>
-    <Compile Include="bancoestacionamentoDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>bancoestacionamentoDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="bancoestacionamentoDataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>bancoestacionamentoDataSet1.xsd</DependentUpon>
-    </Compile>
     <Compile Include="ConectaBanco.cs" />
-    <Compile Include="Entrada.cs">
+    <Compile Include="Forms\Entrada.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Entrada.Designer.cs">
+    <Compile Include="Forms\Entrada.Designer.cs">
       <DependentUpon>Entrada.cs</DependentUpon>
     </Compile>
-    <Compile Include="Estacionamento.cs">
+    <Compile Include="Forms\Estacionamento.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Estacionamento.Designer.cs">
+    <Compile Include="Forms\Estacionamento.Designer.cs">
       <DependentUpon>Estacionamento.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Saida.cs">
+    <Compile Include="Forms\Saida.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Saida.Designer.cs">
+    <Compile Include="Forms\Saida.Designer.cs">
       <DependentUpon>Saida.cs</DependentUpon>
     </Compile>
-    <Compile Include="TabelaPreco.cs">
+    <Compile Include="Forms\TabelaPreco.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TabelaPreco.Designer.cs">
+    <Compile Include="Forms\TabelaPreco.Designer.cs">
       <DependentUpon>TabelaPreco.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Alterar.resx">
+    <EmbeddedResource Include="Forms\Alterar.resx">
       <DependentUpon>Alterar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Entrada.resx">
+    <EmbeddedResource Include="Forms\Entrada.resx">
       <DependentUpon>Entrada.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Estacionamento.resx">
+    <EmbeddedResource Include="Forms\Estacionamento.resx">
       <DependentUpon>Estacionamento.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -115,34 +182,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Saida.resx">
+    <EmbeddedResource Include="Forms\Saida.resx">
       <DependentUpon>Saida.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TabelaPreco.resx">
+    <EmbeddedResource Include="Forms\TabelaPreco.resx">
       <DependentUpon>TabelaPreco.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="bancoestacionamentoDataSet.xsc">
-      <DependentUpon>bancoestacionamentoDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="bancoestacionamentoDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>bancoestacionamentoDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="bancoestacionamentoDataSet.xss">
-      <DependentUpon>bancoestacionamentoDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="bancoestacionamentoDataSet1.xsc">
-      <DependentUpon>bancoestacionamentoDataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="bancoestacionamentoDataSet1.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>bancoestacionamentoDataSet1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="bancoestacionamentoDataSet1.xss">
-      <DependentUpon>bancoestacionamentoDataSet1.xsd</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -5,7 +5,7 @@ namespace Estacionamento
     class ConectaBanco 
     {
         public static MySqlConnection conect = null;
-        public void conexao()
+        public void Conexao()
         {
             string banco = "server=localhost;" +
             "user id=root;password=Thais123;database=bancoestacionamento;" +
